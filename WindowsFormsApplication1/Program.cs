@@ -10,6 +10,7 @@ namespace WindowsFormsApplication1
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
+        /// A test gor git (this line only)
         [STAThread]
         static void Main()
         {
