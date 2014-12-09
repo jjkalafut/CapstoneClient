@@ -34,6 +34,8 @@ namespace Project1 {
 		void pollPackets();
 		void set_address( UINT addr);
 		void send_upd_packet();
+		void stream();
+		void stop_stream();
 
 	protected:
 		/// <summary>
@@ -62,14 +64,16 @@ namespace Project1 {
 	private: System::Windows::Forms::ToolStripMenuItem^  toolsToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^  getHelpToolStripMenuItem;
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
-	private: System::Windows::Forms::Button^  button1;
-	private: System::Windows::Forms::Button^  button2;
+
+	private: System::Windows::Forms::Button^  stream_btn;
+
 	private: System::Windows::Forms::Button^  button3;
 	private: System::Windows::Forms::Button^  button4;
 	private: System::Windows::Forms::Label^  label2;
 	private: System::Windows::Forms::TextBox^  textBox1;
 	private: System::Windows::Forms::Timer^  timer1;
 	private: System::Windows::Forms::CheckedListBox^  Devices;
+	private: System::Windows::Forms::Timer^  timer2;
 	private: System::ComponentModel::IContainer^  components;
 
 	private:
@@ -98,14 +102,14 @@ namespace Project1 {
 			this->toolsToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->getHelpToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
-			this->button1 = (gcnew System::Windows::Forms::Button());
-			this->button2 = (gcnew System::Windows::Forms::Button());
+			this->stream_btn = (gcnew System::Windows::Forms::Button());
 			this->button3 = (gcnew System::Windows::Forms::Button());
 			this->button4 = (gcnew System::Windows::Forms::Button());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			this->Devices = (gcnew System::Windows::Forms::CheckedListBox());
+			this->timer2 = (gcnew System::Windows::Forms::Timer(this->components));
 			this->menuStrip1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
@@ -199,29 +203,18 @@ namespace Project1 {
 			this->pictureBox1->TabIndex = 4;
 			this->pictureBox1->TabStop = false;
 			// 
-			// button1
+			// stream_btn
 			// 
-			this->button1->BackColor = System::Drawing::Color::Black;
-			this->button1->FlatAppearance->BorderColor = System::Drawing::Color::Lime;
-			this->button1->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button1->Location = System::Drawing::Point(192, 395);
-			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(150, 35);
-			this->button1->TabIndex = 5;
-			this->button1->Text = L"Check for Devices";
-			this->button1->UseVisualStyleBackColor = false;
-			// 
-			// button2
-			// 
-			this->button2->BackColor = System::Drawing::Color::Black;
-			this->button2->FlatAppearance->BorderColor = System::Drawing::Color::Lime;
-			this->button2->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button2->Location = System::Drawing::Point(36, 395);
-			this->button2->Name = L"button2";
-			this->button2->Size = System::Drawing::Size(150, 35);
-			this->button2->TabIndex = 6;
-			this->button2->Text = L"Configure";
-			this->button2->UseVisualStyleBackColor = false;
+			this->stream_btn->BackColor = System::Drawing::Color::Black;
+			this->stream_btn->FlatAppearance->BorderColor = System::Drawing::Color::Lime;
+			this->stream_btn->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->stream_btn->Location = System::Drawing::Point(36, 395);
+			this->stream_btn->Name = L"stream_btn";
+			this->stream_btn->Size = System::Drawing::Size(150, 35);
+			this->stream_btn->TabIndex = 6;
+			this->stream_btn->Text = L"Start Streaming";
+			this->stream_btn->UseVisualStyleBackColor = false;
+			this->stream_btn->Click += gcnew System::EventHandler(this, &MyForm::stream_btn_Click);
 			// 
 			// button3
 			// 
@@ -232,7 +225,7 @@ namespace Project1 {
 			this->button3->Name = L"button3";
 			this->button3->Size = System::Drawing::Size(150, 35);
 			this->button3->TabIndex = 7;
-			this->button3->Text = L"Send Dev Packet";
+			this->button3->Text = L"Stop Streaming";
 			this->button3->UseVisualStyleBackColor = false;
 			this->button3->Click += gcnew System::EventHandler(this, &MyForm::button3_Click);
 			// 
@@ -245,7 +238,7 @@ namespace Project1 {
 			this->button4->Name = L"button4";
 			this->button4->Size = System::Drawing::Size(150, 35);
 			this->button4->TabIndex = 8;
-			this->button4->Text = L"Check Src";
+			this->button4->Text = L"Check For Devices";
 			this->button4->UseVisualStyleBackColor = false;
 			this->button4->Click += gcnew System::EventHandler(this, &MyForm::button4_Click);
 			// 
@@ -284,6 +277,10 @@ namespace Project1 {
 			this->Devices->TabIndex = 11;
 			this->Devices->SelectedIndexChanged += gcnew System::EventHandler(this, &MyForm::Devices_SelectedIndexChanged);
 			// 
+			// timer2
+			// 
+			this->timer2->Tick += gcnew System::EventHandler(this, &MyForm::timer2_Tick);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -295,8 +292,7 @@ namespace Project1 {
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->button4);
 			this->Controls->Add(this->button3);
-			this->Controls->Add(this->button2);
-			this->Controls->Add(this->button1);
+			this->Controls->Add(this->stream_btn);
 			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->menuStrip1);
@@ -316,17 +312,19 @@ namespace Project1 {
 #pragma endregion
 	private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
 	}
-	private: System::Void Clients_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
-		//send_packet();
-	}
 	private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
-		send_upd_packet();
+		printf("stopping stream.. \n");
+		stop_stream();
+		this->timer2->Stop();
+		this->timer1->Start();
+		//send_upd_packet();
 	}
 	private: System::Void exitToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
 		this->Close();
 	}
 	private: System::Void button4_Click(System::Object^  sender, System::EventArgs^  e) {
-		pollPackets();
+		//pollPackets();
+		send_upd_packet();
 	}
 
 	private: System::Void textBox1_Enter(System::Object^  sender, System::EventArgs^  e){
@@ -336,7 +334,7 @@ namespace Project1 {
 			inet_pton(AF_INET, static_cast<char*>(ptrToNativeString.ToPointer()), &destip);
 		destip = ntohl(destip);
 		set_address(destip);
-		this->timer1->Interval = 5;
+		this->timer1->Interval = 20;
 		this->timer1 -> Start();
 	}
 
@@ -350,6 +348,15 @@ namespace Project1 {
 			checked[i] = this->Devices->GetItemChecked(i);
 		}
 		send_select( checked );
+	}
+	private: System::Void timer2_Tick(System::Object^  sender, System::EventArgs^  e) {
+		stream();
+	}
+	private: System::Void stream_btn_Click(System::Object^  sender, System::EventArgs^  e) {
+		printf("streaming audio.. \n");
+		this->timer1->Stop();
+		this->timer2->Interval = 100;
+		this->timer2->Start();
 	}
 };
 }
