@@ -18,18 +18,12 @@
     <ClCompile Include="MyForm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Quadratic Equation C1\QuadraticEquation\stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MyForm.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Quadratic Equation C1\QuadraticEquation\resource.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Quadratic Equation C1\QuadraticEquation\stdafx.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\CapstoneHeaders\pandaheader.h">
