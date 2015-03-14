@@ -247,7 +247,7 @@ void MyForm::pollPackets(){
 			memcpy(&sp.address, &addr, 4);
 			strcpy_s(&sp.name[0], STR_BUFF_SZ, &client_name[0]);
 
-			sess.SendPacketEx(&sp, sizeof(signupPacket), SET_NAME, 0, 0);
+			sess.SendPacketEx(&sp, sizeof(sp), SET_NAME, 0, 0);
 		}
 		else{
 			ask_devices();
@@ -285,7 +285,7 @@ void MyForm::pollPackets(){
 				}
 
 				case SET_DEV: {
-					//printf(" SET DEV RECIEVED \n");
+					printf(" SET DEV RECIEVED \n");
 					ackd = 1;
 					devPacket * devp;
 					devp = (devPacket *)pack->GetPayloadData();
@@ -403,10 +403,10 @@ int main(array<System::String ^> ^args)
 	Application::SetCompatibleTextRenderingDefault(false);
 
 	//establish rtp protocols
-	inet_pton(AF_INET, "192.168.1.27", &destip);
+	inet_pton(AF_INET, "192.168.1.5", &destip);
 	destip = ntohl(destip);
 
-	portbase = 6000;
+	portbase = 6002;
 	destport = 6000;
 
 	RTPUDPv4TransmissionParams transparams;
